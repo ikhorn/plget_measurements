@@ -1,0 +1,5 @@
+set ylabel 'latency, us'
+set key box
+set grid
+set title "x86, i210, tx, udp (complete latency)\nno RT, no load, no prio, no affinity"
+plot[1:1000] "data_2_x86_64_nort_tx_udp_noload_noprio_noaff_complete.txt" with points pointtype 5 black title "complete"
