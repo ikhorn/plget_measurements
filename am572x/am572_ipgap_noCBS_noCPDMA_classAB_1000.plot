@@ -8,7 +8,7 @@ file_name1 = 'am572_ipgap_noCBS_noCPDMA_classA_parB_1000.data'
 file_name2 = 'am572_ipgap_noCBS_noCPDMA_classB_parA_1000.data'
 
 set title "am572x, cpsw, \
-class A, \
+class A + B, \
 ptpl2, \
 no CBS, \
 no CPDMA limit, \
