@@ -48,28 +48,3 @@ plot[1:10000] "< sed -e '0,/----/ d' -e '/----/,$ d' ". file_name1 \
 with points pointtype 7 black title "class A period, us", \
 "< sed -e '0,/----/ d' -e '/----/,$ d' ". file_name2 \
 with points pointtype 7 lc rgb "red" title "class B period, us", \
-
-#set title "am572x, cpsw, \
-#class B, \
-#ptpl2, \
-#no CBS, \
-#no CPDMA limit, \
-#itf speed = 1000Mbps, \
-#\npacket = `sed -n '/packet\ size/s/\(^.*\): \(.\)/\2/p' "@file_name2"`B, \
-#rate = `sed -n '/RATE/s/\(^.*\)PPS = \(.\)/\2/p' "@file_name2"`pps, \
-#`sed -n '/RATE\ =/s/\(^.*\)= \(.*\),\(.*\)/\2/p' "@file_name2"`, \
-#min = `sed -n '/min\ val/s/\(^.*\)= \(.\)/\2/p' "@file_name2"`, \
-#max = `sed -n '/max\ val/s/\(^.*\)= \(.\)/\2/p' "@file_name2"`, \
-#p-t-p = `sed -n '/peak-to-peak/s/\(^.*\)= \(.\)/\2/p' "@file_name2"`"
-#
-#set terminal qt 3
-#plot[4000:4050] "< sed -e '0,/----/ d' -e '/----/,$ d' ". file_name2 \
-#with points pointtype 7 black title "class B period, us"
-#
-#set terminal qt 4
-#plot[4950:5050] "< sed -e '0,/----/ d' -e '/----/,$ d' ". file_name2 \
-#with points pointtype 7 black title "class B period, us"
-#
-#set terminal qt 5
-#plot[1:10000] "< sed -e '0,/----/ d' -e '/----/,$ d' ". file_name2 \
-#with points pointtype 7 black title "class B period, us"
