@@ -28,7 +28,7 @@ set title "am572x, cpsw, \
 class A (par B), \
 ptpl2, \
 no CBS, \
-no CPDMA, \
+CPDMA, \
 itf speed = 1000Mbps, \
 packet = `sed -n '/packet\ size/s/\(^.*\): \(.\)/\2/p' "@file_name1"`B, \
 \nrate = `sed -n '/RATE/s/\(^.*\)PPS = \(.\)/\2/p' "@file_name1"`pps, \
@@ -62,7 +62,7 @@ set title "am572x, cpsw, \
 class B (par A), \
 ptpl2, \
 no CBS, \
-no CPDMA, \
+CPDMA, \
 itf speed = 1000Mbps, \
 \nrate = `sed -n '/RATE/s/\(^.*\)PPS = \(.\)/\2/p' "@file_name2"`pps, \
 `sed -n '/RATE\ =/s/\(^.*\)= \(.*\),\(.*\)/\2/p' "@file_name2"`, \
