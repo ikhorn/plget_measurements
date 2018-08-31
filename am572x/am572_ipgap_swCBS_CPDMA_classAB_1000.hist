@@ -1,0 +1,76 @@
+reset
+
+file_name1 = 'am572_ipgap_swCBS_CPDMA_classA_parB_1000.data'
+file_name2 = 'am572_ipgap_swCBS_CPDMA_classB_parA_1000.data'
+
+n=150 #number of intervals
+mean="`sed -n '/mean\ +-\ RMS/s/\(^.*\)= \(.*\) +- \(.*$\)/\2/p' "@file_name1"`"
+rms="`sed -n '/mean\ +-\ RMS/s/\(^.*\)= \(.*\) +- \(.*\) us$/\3/p' "@file_name1"`"
+max=mean + rms
+min=mean - rms
+
+width=(max-min)/n #interval width
+#function used to map a value to the intervals
+hist(x,width)=width*floor(x/width)+width/2.0
+set xrange [min:max]
+set yrange [0:]
+#to put an empty boundary around the
+#data inside an autoscaled graph.
+set offset graph 0.05,0.05,0.05,0.0
+set xtics min,(max-min)/5,max
+set boxwidth width*0.9
+set style fill solid 0.5 #fillstyle
+set tics out nomirror
+set xlabel "inter packet time (ipgap)"
+set ylabel "frequency"
+
+set title "am572x, cpsw, \
+class A (par B), \
+ptpl2, \
+swCBS, \
+itf speed = 1000Mbps, \
+packet = `sed -n '/packet\ size/s/\(^.*\): \(.\)/\2/p' "@file_name1"`B, \
+\nrate = `sed -n '/RATE/s/\(^.*\)PPS = \(.\)/\2/p' "@file_name1"`pps, \
+`sed -n '/RATE\ =/s/\(^.*\)= \(.*\),\(.*\)/\2/p' "@file_name1"`, \
+min = `sed -n '/min\ val/s/\(^.*\)= \(.\)/\2/p' "@file_name1"`, \
+max = `sed -n '/max\ val/s/\(^.*\)= \(.\)/\2/p' "@file_name1"`, \
+p-t-p = `sed -n '/peak-to-peak/s/\(^.*\)= \(.\)/\2/p' "@file_name1"`, \
+\nmean-+RMS = `sed -n '/mean\ +-\ RMS/s/\(^.*\)= \(.\)/\2/p' "@file_name1"`"
+
+set terminal qt 0
+plot "< sed -e '0,/----/ d' -e '/----/,$ d' ". file_name1 u (hist($1,width)):(1.0) smooth freq w boxes lc rgb"black" title "class A"
+
+
+mean="`sed -n '/mean\ +-\ RMS/s/\(^.*\)= \(.*\) +- \(.*$\)/\2/p' "@file_name2"`"
+rms="`sed -n '/mean\ +-\ RMS/s/\(^.*\)= \(.*\) +- \(.*\) us$/\3/p' "@file_name2"`"
+max=mean + rms
+min=mean - rms
+
+width=(max-min)/n #interval width
+set xrange [min:max]
+set yrange [0:]
+set offset graph 0.05,0.05,0.05,0.0
+set xtics min,(max-min)/5,max
+set boxwidth width*0.9
+set style fill solid 0.5 #fillstyle
+set tics out nomirror
+set xlabel "inter packet time (ipgap)"
+set ylabel "frequency"
+
+set title "am572x, cpsw, \
+class B (par A), \
+ptpl2, \
+swCBS, \
+itf speed = 1000Mbps, \
+\nrate = `sed -n '/RATE/s/\(^.*\)PPS = \(.\)/\2/p' "@file_name2"`pps, \
+`sed -n '/RATE\ =/s/\(^.*\)= \(.*\),\(.*\)/\2/p' "@file_name2"`, \
+min = `sed -n '/min\ val/s/\(^.*\)= \(.\)/\2/p' "@file_name2"`, \
+max = `sed -n '/max\ val/s/\(^.*\)= \(.\)/\2/p' "@file_name2"`, \
+p-t-p = `sed -n '/peak-to-peak/s/\(^.*\)= \(.\)/\2/p' "@file_name2"`, \
+\nmean-+RMS = `sed -n '/mean\ +-\ RMS/s/\(^.*\)= \(.\)/\2/p' "@file_name2"`"
+
+set terminal qt 1
+plot "< sed -e '0,/----/ d' -e '/----/,$ d' ". file_name2 u (hist($1,width)):(1.0) smooth freq w boxes lc rgb"red" title "class B"
+
+set terminal qt 2
+plot "< sed -e '0,/----/ d' -e '/----/,$ d' -e '1,5010 !d' ". file_name2 u (hist($1,width)):(1.0) smooth freq w boxes lc rgb"red" title "class B"
