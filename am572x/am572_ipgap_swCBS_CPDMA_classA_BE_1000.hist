@@ -21,7 +21,7 @@ set boxwidth width*0.9
 set style fill solid 0.5 #fillstyle
 set tics out nomirror
 set xlabel "inter packet time (ipgap)"
-set ylabel "packet frequency"
+set ylabel "frequency"
 
 set title "am572x, cpsw, \
 class A (par BE), \

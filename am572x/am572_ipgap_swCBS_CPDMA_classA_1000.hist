@@ -19,7 +19,7 @@ set boxwidth width*0.9
 set style fill solid 0.5 #fillstyle
 set tics out nomirror
 set xlabel "inter packet time (ipgap)"
-set ylabel "packet frequency"
+set ylabel "frequency"
 
 set title "am572x, cpsw, \
 class A, \
@@ -51,7 +51,7 @@ set boxwidth width*0.9
 set style fill solid 0.5 #fillstyle
 set tics out nomirror
 set xlabel "inter packet time (ipgap)"
-set ylabel "packet frequency"
+set ylabel "frequency"
 
 set terminal qt 1
 plot "< sed -e '0,/----/ d' -e '/----/,$ d' -e '239,10000 !d' ". file_name u (hist($1,width)):(1.0) smooth freq w boxes lc rgb"black" title "class A"
