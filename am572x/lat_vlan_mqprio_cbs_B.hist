@@ -1,0 +1,157 @@
+reset
+
+file_name1 = 'lat_vlan_mqprio_cbs_B.data'
+
+n=150 #number of intervals
+mean="`sed -n '/mean\ +-\ RMS/s/\(^.*\)= \(.*\) +- \(.*$\)/\2/p' "@file_name1" | sed -n '1p'`"
+rms="`sed -n '/mean\ +-\ RMS/s/\(^.*\)= \(.*\) +- \(.*\) us$/\3/p' "@file_name1" | sed -n '1p'`"
+rms1=rms
+max=mean + rms1*4
+min=mean - rms1*2
+
+width=(max-min)/n #interval width
+#function used to map a value to the intervals
+hist(x,width)=width*floor(x/width)+width/2.0
+set xrange [min:max]
+set yrange [0:]
+#to put an empty boundary around the
+#data inside an autoscaled graph.
+set offset graph 0.05,0.05,0.05,0.0
+set xtics min,(max-min)/5,max
+set boxwidth width*0.9
+set style fill solid 0.5 #fillstyle
+set tics out nomirror
+set xlabel "latency, us"
+set ylabel "frequency"
+
+set title "class B (par A), \
+ptpl2, \
+mqprio + cbs qdisc + vlan, \
+itf speed = 1000Mbps, \
+packet = `sed -n '/packet\ size/s/\(^.*\): \(.\)/\2/p' "@file_name1"`B, \
+\nrate = `sed -n '/RATE/s/\(^.*\)PPS = \(.\)/\2/p' "@file_name1"`pps, \
+`sed -n '/RATE\ =/s/\(^.*\)= \(.*\),\(.*\)/\2/p' "@file_name1"`, \
+min = `sed -n '/min\ val/s/\(^.*\)= \(.\)/\2/p' "@file_name1" | sed -n '1p'`, \
+max = `sed -n '/max\ val/s/\(^.*\)= \(.\)/\2/p' "@file_name1" | sed -n '1p'`, \
+p-t-p = `sed -n '/peak-to-peak/s/\(^.*\)= \(.\)/\2/p' "@file_name1" | sed -n '1p'`, \
+\nmean-+RMS = `sed -n '/mean\ +-\ RMS/s/\(^.*\)= \(.\)/\2/p' "@file_name1" | sed -n '1p'`"
+
+set terminal qt 0
+plot "< sed -e '0,/complete tx latency/ d' -e '/max/,$ d' -e '/----/ d' ". file_name1 u (hist($1,width)):(1.0) smooth freq w boxes lc rgb"black" title "complete tx latency (app -> wire), us"
+
+
+
+n=150 #number of intervals
+mean="`sed -n '/mean\ +-\ RMS/s/\(^.*\)= \(.*\) +- \(.*$\)/\2/p' "@file_name1" | sed -n '2p'`"
+rms="`sed -n '/mean\ +-\ RMS/s/\(^.*\)= \(.*\) +- \(.*\) us$/\3/p' "@file_name1"`"
+rms1=rms
+max=mean + rms1*4
+min=mean - rms1*2
+
+width=(max-min)/n #interval width
+#function used to map a value to the intervals
+hist(x,width)=width*floor(x/width)+width/2.0
+set xrange [min:max]
+set yrange [0:]
+#to put an empty boundary around the
+#data inside an autoscaled graph.
+set offset graph 0.05,0.05,0.05,0.0
+set xtics min,(max-min)/5,max
+set boxwidth width*0.9
+set style fill solid 0.5 #fillstyle
+set tics out nomirror
+set xlabel "latency, us"
+set ylabel "frequency"
+
+set title "class B (par A), \
+ptpl2, \
+mqprio + cbs qdisc + vlan, \
+itf speed = 1000Mbps, \
+packet = `sed -n '/packet\ size/s/\(^.*\): \(.\)/\2/p' "@file_name1"`B, \
+\nrate = `sed -n '/RATE/s/\(^.*\)PPS = \(.\)/\2/p' "@file_name1"`pps, \
+`sed -n '/RATE\ =/s/\(^.*\)= \(.*\),\(.*\)/\2/p' "@file_name1"`, \
+min = `sed -n '/min\ val/s/\(^.*\)= \(.\)/\2/p' "@file_name1" | sed -n '2p'`, \
+max = `sed -n '/max\ val/s/\(^.*\)= \(.\)/\2/p' "@file_name1" | sed -n '2p'`, \
+p-t-p = `sed -n '/peak-to-peak/s/\(^.*\)= \(.\)/\2/p' "@file_name1" | sed -n '2p'`, \
+\nmean-+RMS = `sed -n '/mean\ +-\ RMS/s/\(^.*\)= \(.\)/\2/p' "@file_name1" | sed -n '2p'`"
+
+set terminal qt 1
+plot "< sed -e '0,/stack tx latency, us/ d' -e '/max/,$ d' -e '/----/ d' ". file_name1 u (hist($1,width)):(1.0) smooth freq w boxes lc rgb"red" title "stack tx latency (app -> packet scheduler), us"
+
+
+
+
+n=150 #number of intervals
+mean="`sed -n '/mean\ +-\ RMS/s/\(^.*\)= \(.*\) +- \(.*$\)/\2/p' "@file_name1" | sed -n '3p'`"
+rms="`sed -n '/mean\ +-\ RMS/s/\(^.*\)= \(.*\) +- \(.*\) us$/\3/p' "@file_name1"`"
+rms1=rms
+max=mean + rms1*4
+min=mean - rms1*2
+
+width=(max-min)/n #interval width
+#function used to map a value to the intervals
+hist(x,width)=width*floor(x/width)+width/2.0
+set xrange [min:max]
+set yrange [0:]
+#to put an empty boundary around the
+#data inside an autoscaled graph.
+set offset graph 0.05,0.05,0.05,0.0
+set xtics min,(max-min)/5,max
+set boxwidth width*0.9
+set style fill solid 0.5 #fillstyle
+set tics out nomirror
+set xlabel "latency, us"
+set ylabel "frequency"
+
+set title "class B (par A), \
+ptpl2, \
+mqprio + cbs qdisc + vlan, \
+itf speed = 1000Mbps, \
+packet = `sed -n '/packet\ size/s/\(^.*\): \(.\)/\2/p' "@file_name1"`B, \
+\nrate = `sed -n '/RATE/s/\(^.*\)PPS = \(.\)/\2/p' "@file_name1"`pps, \
+`sed -n '/RATE\ =/s/\(^.*\)= \(.*\),\(.*\)/\2/p' "@file_name1"`, \
+min = `sed -n '/min\ val/s/\(^.*\)= \(.\)/\2/p' "@file_name1" | sed -n '3p'`, \
+max = `sed -n '/max\ val/s/\(^.*\)= \(.\)/\2/p' "@file_name1" | sed -n '3p'`, \
+p-t-p = `sed -n '/peak-to-peak/s/\(^.*\)= \(.\)/\2/p' "@file_name1" | sed -n '3p'`, \
+\nmean-+RMS = `sed -n '/mean\ +-\ RMS/s/\(^.*\)= \(.\)/\2/p' "@file_name1" | sed -n '3p'`"
+
+set terminal qt 2
+plot "< sed -e '0,/between device (sched) tx latency, us/ d' -e '/max/,$ d' -e '/----/ d' ". file_name1 u (hist($1,width)):(1.0) smooth freq w boxes lc rgb"blue" title "vlan layer tx latency (packet scheduler entrance -> driver entrance) , us"
+
+
+n=150 #number of intervals
+mean="`sed -n '/mean\ +-\ RMS/s/\(^.*\)= \(.*\) +- \(.*$\)/\2/p' "@file_name1" | sed -n '4p'`"
+rms="`sed -n '/mean\ +-\ RMS/s/\(^.*\)= \(.*\) +- \(.*\) us$/\3/p' "@file_name1"`"
+rms1=rms
+max=mean + rms1*4
+min=mean - rms1*2
+
+width=(max-min)/n #interval width
+#function used to map a value to the intervals
+hist(x,width)=width*floor(x/width)+width/2.0
+set xrange [min:max]
+set yrange [0:]
+#to put an empty boundary around the
+#data inside an autoscaled graph.
+set offset graph 0.05,0.05,0.05,0.0
+set xtics min,(max-min)/5,max
+set boxwidth width*0.9
+set style fill solid 0.5 #fillstyle
+set tics out nomirror
+set xlabel "latency, us"
+set ylabel "frequency"
+
+set title "class B (par A), \
+ptpl2, \
+mqprio + cbs qdisc + vlan, \
+itf speed = 1000Mbps, \
+packet = `sed -n '/packet\ size/s/\(^.*\): \(.\)/\2/p' "@file_name1"`B, \
+\nrate = `sed -n '/RATE/s/\(^.*\)PPS = \(.\)/\2/p' "@file_name1"`pps, \
+`sed -n '/RATE\ =/s/\(^.*\)= \(.*\),\(.*\)/\2/p' "@file_name1"`, \
+min = `sed -n '/min\ val/s/\(^.*\)= \(.\)/\2/p' "@file_name1" | sed -n '4p'`, \
+max = `sed -n '/max\ val/s/\(^.*\)= \(.\)/\2/p' "@file_name1" | sed -n '4p'`, \
+p-t-p = `sed -n '/peak-to-peak/s/\(^.*\)= \(.\)/\2/p' "@file_name1" | sed -n '4p'`, \
+\nmean-+RMS = `sed -n '/mean\ +-\ RMS/s/\(^.*\)= \(.\)/\2/p' "@file_name1" | sed -n '4p'`"
+
+set terminal qt 3
+plot "< sed -e '0,/driver + packet scheduler tx latency, us/ d' -e '/max/,$ d' -e '/----/ d' ". file_name1 u (hist($1,width)):(1.0) smooth freq w boxes lc rgb"green" title "driver tx latency (driver entrance -> wire) , us"
